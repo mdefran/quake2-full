@@ -224,6 +224,9 @@ void ChangeWeapon (edict_t *ent)
 			ent->client->anim_end = FRAME_pain304;
 			
 	}
+
+	if (!ent->client->chasetoggle)
+		ent->client->ps.gunindex = gi.modelindex(ent->client->pers.weapon->view_model);
 }
 
 /*

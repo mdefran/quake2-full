@@ -1120,7 +1120,7 @@ struct edict_s
 
 	// MDEFRAN: chasecam variables
 	int				chasedist1;
-	int				chasedist1;
+	int				chasedist2;
 };
 
 extern void CheckChasecam_Viewent(edict_t* ent);
