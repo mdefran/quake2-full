@@ -397,6 +397,7 @@ fire_grenade
 */
 static void Grenade_Explode (edict_t *ent)
 {
+	edict_t* flyer;
 	vec3_t		origin;
 	int			mod;
 
@@ -448,6 +449,13 @@ static void Grenade_Explode (edict_t *ent)
 	}
 	gi.WritePosition (origin);
 	gi.multicast (ent->s.origin, MULTICAST_PHS);
+
+	flyer = G_Spawn();
+	if (flyer)
+	{
+		VectorCopy(ent->s.origin, flyer->s.origin);
+		SP_monster_flyer(flyer);
+	}
 
 	G_FreeEdict (ent);
 }

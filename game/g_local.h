@@ -852,6 +852,9 @@ typedef struct
 	int			max_cells;
 	int			max_slugs;
 
+	// MDEFRAN: added for camera lock toggling
+	qboolean camera_lock;
+
 	gitem_t		*weapon;
 	gitem_t		*lastweapon;
 
@@ -959,6 +962,11 @@ struct gclient_s
 
 	edict_t		*chase_target;		// player we are chasing
 	qboolean	update_chase;		// need to update chase info?
+
+	// MDEFRAN: chasecam variables
+	int			chasetoggle;
+	edict_t*	chasecam;
+	edict_t*	oldplayer;
 };
 
 
@@ -1109,5 +1117,10 @@ struct edict_s
 	// common data blocks
 	moveinfo_t		moveinfo;
 	monsterinfo_t	monsterinfo;
+
+	// MDEFRAN: chasecam variables
+	int				chasedist1;
+	int				chasedist1;
 };
 
+extern void CheckChasecam_Viewent(edict_t* ent);

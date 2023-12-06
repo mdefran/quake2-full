@@ -626,6 +626,9 @@ void InitClientPersistant (gclient_t *client)
 	client->pers.max_cells		= 200;
 	client->pers.max_slugs		= 50;
 
+	// MDEFRAN: keep camera lock enabled
+	client->pers.camera_lock = 1;
+
 	client->pers.connected = true;
 }
 
@@ -1226,8 +1229,8 @@ void PutClientInServer (edict_t *ent)
 	ent->s.angles[PITCH] = 0;
 	ent->s.angles[YAW] = spawn_angles[YAW];
 	ent->s.angles[ROLL] = 0;
-	VectorCopy (ent->s.angles, client->ps.viewangles);
-	VectorCopy (ent->s.angles, client->v_angle);
+	VectorCopy(ent->s.angles, client->ps.viewangles);
+	VectorCopy(ent->s.angles, client->v_angle);
 
 	// spawn a spectator
 	if (client->pers.spectator) {
@@ -1561,6 +1564,75 @@ void PrintPmove (pmove_t *pm)
 
 /*
 ==============
+LockCamera
+
+MDEFRAN:
+Updates the player's view angle to track a target entity
+==============
+*/
+void LockCamera(edict_t* ent) {
+	/*
+	edict_t* target = NULL;
+	edict_t* blip = NULL;
+	vec3_t targetdir, blipdir, v;
+
+	while ((blip = findradius(blip, ent->s.origin, 1000)) != NULL) {
+		if (!(blip->svflags & SVF_MONSTER) && !blip->client)
+			continue;
+		if (blip == ent->owner)
+			continue;
+		if (!blip->takedamage)
+			continue;
+		if (blip->health <= 0)
+			continue;
+		if (!visible(ent, blip))
+			continue;
+		if (!infront(ent, blip))
+			continue;
+		VectorSubtract(blip->s.origin, ent->s.origin, blipdir);
+		blipdir[2] += 16;
+		if ((target == NULL) || (VectorLength(blipdir) < VectorLength(targetdir))) {
+			target = blip;
+			VectorCopy(blipdir, targetdir);
+		}
+	}
+
+	if (target != NULL) {
+		gi.dprintf("T");
+
+		// Normalize the target direction vector
+		VectorNormalize(targetdir);
+
+		// Convert the direction vector to pitch and yaw angles
+		vec3_t angles;
+		vectoangles(targetdir, angles);
+		gi.dprintf("v_angle: Pitch: %f, Yaw: %f, Roll: %f\n", ent->client->v_angle[PITCH], ent->client->v_angle[YAW], ent->client->v_angle[ROLL]);
+		gi.dprintf("angles: Pitch: %f, Yaw: %f, Roll: %f\n", ent->s.angles[PITCH], ent->s.angles[YAW], ent->s.angles[ROLL]);
+		gi.dprintf("ps: Pitch: %f, Yaw: %f, Roll: %f\n", ent->client->ps.viewangles[PITCH], ent->client->ps.viewangles[YAW], ent->client->ps.viewangles[ROLL]);
+
+		// Set the player's view angles to the new angles
+		VectorCopy(angles, ent->client->v_angle);
+		VectorCopy(angles, ent->s.angles);
+		VectorCopy(angles, ent->client->ps.viewangles);
+	}
+	else {
+		gi.dprintf("N");
+	}
+	*/
+	vec3_t fixedAngles = { 0, 115, 0 }; // Pitch, Yaw, Roll
+
+	VectorCopy(fixedAngles, ent->client->v_angle);
+	VectorCopy(fixedAngles, ent->s.angles);
+	VectorCopy(fixedAngles, ent->client->ps.viewangles);
+
+	// For debugging, print the angles
+	gi.dprintf("v_angle: Pitch: %f, Yaw: %f, Roll: %f\n", ent->client->v_angle[PITCH], ent->client->v_angle[YAW], ent->client->v_angle[ROLL]);
+	gi.dprintf("angles: Pitch: %f, Yaw: %f, Roll: %f\n", ent->s.angles[PITCH], ent->s.angles[YAW], ent->s.angles[ROLL]);
+	gi.dprintf("ps: Pitch: %f, Yaw: %f, Roll: %f\n", ent->client->ps.viewangles[PITCH], ent->client->ps.viewangles[YAW], ent->client->ps.viewangles[ROLL]);
+}
+
+/*
+==============
 ClientThink
 
 This will be called once for each client frame, which will
@@ -1670,8 +1742,8 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 		}
 		else
 		{
-			VectorCopy (pm.viewangles, client->v_angle);
-			VectorCopy (pm.viewangles, client->ps.viewangles);
+			VectorCopy(pm.viewangles, client->v_angle);
+			VectorCopy(pm.viewangles, client->ps.viewangles);
 		}
 
 		gi.linkentity (ent);
@@ -1692,6 +1764,7 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 				continue;
 			other->touch (other, ent, NULL, NULL);
 		}
+
 
 	}
 

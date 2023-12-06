@@ -305,7 +305,7 @@ void SV_CalcViewOffset (edict_t *ent)
 	if (ratio < 0)
 		ratio = 0;
 	v[2] -= ratio * ent->client->fall_value * 0.4;
-
+	
 	// add bob height
 
 	bob = bobfracsin * xyspeed * bob_up->value;
