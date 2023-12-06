@@ -134,6 +134,9 @@ void ChasecamTrack(edict_t* ent)
      * of forward, right, and up. VERY useful */
     AngleVectors(ent->owner->client->v_angle, forward, right, up);
 
+    // MDEFRAN: inverse the forward vector to place the camera behind the player
+    VectorNegate(forward, forward);
+
     /* go starting at the player's origin, forward, ent->chasedist1
      * distance, and save the location in vector spot2 */
     VectorMA(ent->owner->s.origin, ent->chasedist1, forward, spot2);

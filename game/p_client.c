@@ -1571,7 +1571,6 @@ Updates the player's view angle to track a target entity
 ==============
 */
 void LockCamera(edict_t* ent) {
-	/*
 	edict_t* target = NULL;
 	edict_t* blip = NULL;
 	vec3_t targetdir, blipdir, v;
@@ -1606,29 +1605,12 @@ void LockCamera(edict_t* ent) {
 		// Convert the direction vector to pitch and yaw angles
 		vec3_t angles;
 		vectoangles(targetdir, angles);
-		gi.dprintf("v_angle: Pitch: %f, Yaw: %f, Roll: %f\n", ent->client->v_angle[PITCH], ent->client->v_angle[YAW], ent->client->v_angle[ROLL]);
-		gi.dprintf("angles: Pitch: %f, Yaw: %f, Roll: %f\n", ent->s.angles[PITCH], ent->s.angles[YAW], ent->s.angles[ROLL]);
-		gi.dprintf("ps: Pitch: %f, Yaw: %f, Roll: %f\n", ent->client->ps.viewangles[PITCH], ent->client->ps.viewangles[YAW], ent->client->ps.viewangles[ROLL]);
 
 		// Set the player's view angles to the new angles
 		VectorCopy(angles, ent->client->v_angle);
 		VectorCopy(angles, ent->s.angles);
 		VectorCopy(angles, ent->client->ps.viewangles);
 	}
-	else {
-		gi.dprintf("N");
-	}
-	*/
-	vec3_t fixedAngles = { 0, 115, 0 }; // Pitch, Yaw, Roll
-
-	VectorCopy(fixedAngles, ent->client->v_angle);
-	VectorCopy(fixedAngles, ent->s.angles);
-	VectorCopy(fixedAngles, ent->client->ps.viewangles);
-
-	// For debugging, print the angles
-	gi.dprintf("v_angle: Pitch: %f, Yaw: %f, Roll: %f\n", ent->client->v_angle[PITCH], ent->client->v_angle[YAW], ent->client->v_angle[ROLL]);
-	gi.dprintf("angles: Pitch: %f, Yaw: %f, Roll: %f\n", ent->s.angles[PITCH], ent->s.angles[YAW], ent->s.angles[ROLL]);
-	gi.dprintf("ps: Pitch: %f, Yaw: %f, Roll: %f\n", ent->client->ps.viewangles[PITCH], ent->client->ps.viewangles[YAW], ent->client->ps.viewangles[ROLL]);
 }
 
 /*
