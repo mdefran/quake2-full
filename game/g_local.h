@@ -852,9 +852,6 @@ typedef struct
 	int			max_cells;
 	int			max_slugs;
 
-	// MDEFRAN: added for camera lock toggling
-	qboolean camera_lock;
-
 	gitem_t		*weapon;
 	gitem_t		*lastweapon;
 
@@ -967,6 +964,9 @@ struct gclient_s
 	int			chasetoggle;
 	edict_t*	chasecam;
 	edict_t*	oldplayer;
+
+	// MDEFRAN: souls tracker
+	int			souls;
 };
 
 

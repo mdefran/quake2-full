@@ -496,6 +496,12 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 			
 		if (targ->health <= 0)
 		{
+			// MDEFRAN: give the player souls for every monster kill
+			if ((targ->svflags & SVF_MONSTER) && (attacker->client)) {
+				attacker->client->souls += 10;
+				gi.dprintf("%i ", attacker->client->souls);
+			}
+
 			if ((targ->svflags & SVF_MONSTER) || (client))
 				targ->flags |= FL_NO_KNOCKBACK;
 			Killed (targ, inflictor, attacker, take, point);

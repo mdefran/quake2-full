@@ -626,10 +626,10 @@ void InitClientPersistant (gclient_t *client)
 	client->pers.max_cells		= 200;
 	client->pers.max_slugs		= 50;
 
-	// MDEFRAN: keep camera lock enabled
-	client->pers.camera_lock = 1;
-
 	client->pers.connected = true;
+
+	// MDEFRAN: initialize souls to 0
+	client->souls = 0;
 }
 
 
@@ -1560,57 +1560,6 @@ void PrintPmove (pmove_t *pm)
 	c1 = CheckBlock (&pm->s, sizeof(pm->s));
 	c2 = CheckBlock (&pm->cmd, sizeof(pm->cmd));
 	Com_Printf ("sv %3i:%i %i\n", pm->cmd.impulse, c1, c2);
-}
-
-/*
-==============
-LockCamera
-
-MDEFRAN:
-Updates the player's view angle to track a target entity
-==============
-*/
-void LockCamera(edict_t* ent) {
-	edict_t* target = NULL;
-	edict_t* blip = NULL;
-	vec3_t targetdir, blipdir, v;
-
-	while ((blip = findradius(blip, ent->s.origin, 1000)) != NULL) {
-		if (!(blip->svflags & SVF_MONSTER) && !blip->client)
-			continue;
-		if (blip == ent->owner)
-			continue;
-		if (!blip->takedamage)
-			continue;
-		if (blip->health <= 0)
-			continue;
-		if (!visible(ent, blip))
-			continue;
-		if (!infront(ent, blip))
-			continue;
-		VectorSubtract(blip->s.origin, ent->s.origin, blipdir);
-		blipdir[2] += 16;
-		if ((target == NULL) || (VectorLength(blipdir) < VectorLength(targetdir))) {
-			target = blip;
-			VectorCopy(blipdir, targetdir);
-		}
-	}
-
-	if (target != NULL) {
-		gi.dprintf("T");
-
-		// Normalize the target direction vector
-		VectorNormalize(targetdir);
-
-		// Convert the direction vector to pitch and yaw angles
-		vec3_t angles;
-		vectoangles(targetdir, angles);
-
-		// Set the player's view angles to the new angles
-		VectorCopy(angles, ent->client->v_angle);
-		VectorCopy(angles, ent->s.angles);
-		VectorCopy(angles, ent->client->ps.viewangles);
-	}
 }
 
 /*
