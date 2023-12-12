@@ -380,6 +380,9 @@ void G_SetStats (edict_t *ent)
 	int			index, cells;
 	int			power_armor_type;
 
+	// MDEFRAN: update souls count for hud
+	ent->client->ps.stats[STAT_SOULS] = ent->client->souls;
+
 	//
 	// health
 	//

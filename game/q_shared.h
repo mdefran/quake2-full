@@ -1008,6 +1008,8 @@ typedef enum
 #define	STAT_FLASHES			15		// cleared each frame, 1 = health, 2 = armor
 #define STAT_CHASE				16
 #define STAT_SPECTATOR			17
+// MDEFRAN: custom stat indexes for hud updates
+#define STAT_SOULS				18
 
 #define	MAX_STATS				32
 
@@ -1023,7 +1025,7 @@ typedef enum
 #define DF_MODELTEAMS		0x00000080	// 128
 #define DF_NO_FRIENDLY_FIRE	0x00000100	// 256
 #define	DF_SPAWN_FARTHEST	0x00000200	// 512
-#define DF_FORCE_RESPAWN	0x00000400	// 1024
+#define DF_FORCE_RESPAWN	0x00000400	// z
 #define DF_NO_ARMOR			0x00000800	// 2048
 #define DF_ALLOW_EXIT		0x00001000	// 4096
 #define DF_INFINITE_AMMO	0x00002000	// 8192

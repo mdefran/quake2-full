@@ -38,6 +38,7 @@ c:\users\matthew\programs\quake2\quake2-full\game\release\m_boss32.obj
 c:\users\matthew\programs\quake2\quake2-full\game\release\m_boss31.obj
 c:\users\matthew\programs\quake2\quake2-full\game\release\m_boss3.obj
 c:\users\matthew\programs\quake2\quake2-full\game\release\m_boss2.obj
+c:\users\matthew\programs\quake2\quake2-full\game\release\s_cam.obj
 c:\users\matthew\programs\quake2\quake2-full\game\release\q_shared.obj
 c:\users\matthew\programs\quake2\quake2-full\game\release\p_weapon.obj
 c:\users\matthew\programs\quake2\quake2-full\game\release\p_view.obj
@@ -46,7 +47,6 @@ c:\users\matthew\programs\quake2\quake2-full\game\release\p_hud.obj
 c:\users\matthew\programs\quake2\quake2-full\game\release\p_client.obj
 c:\users\matthew\programs\quake2\quake2-full\game\release\m_tank.obj
 c:\users\matthew\programs\quake2\quake2-full\game\release\m_supertank.obj
-c:\users\matthew\programs\quake2\quake2-full\game\release\s_cam.obj
 c:\users\matthew\programs\quake2\quake2-full\release\gamex86.lib
 c:\users\matthew\programs\quake2\quake2-full\release\gamex86.exp
 c:\users\matthew\programs\quake2\quake2-full\game\release\gamex86.dll

@@ -701,6 +701,11 @@ char *single_statusbar =
 "	xv	148 "
 "	pic	11 "
 "endif "
+
+// MDEFRAN: draw souls to statusbar
+"yb -24 "           // Position from the bottom of the screen
+"xv 80 "             // Position from the left of the screen
+"num 3 18 "         // Display the value from stat index 16 (STAT_SOULS_COUNT) with 3 digits
 ;
 
 char *dm_statusbar =
