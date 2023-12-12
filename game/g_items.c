@@ -208,6 +208,18 @@ qboolean Pickup_Adrenaline (edict_t *ent, edict_t *other)
 	return true;
 }
 
+// MDEFRAN: souls pickup function
+qboolean Pickup_Souls(edict_t* ent, edict_t* other)
+{
+	other->client->souls += other->client->pers.souls_count;
+	other->client->pers.souls_count = 0;
+
+	if (!(ent->spawnflags & DROPPED_ITEM) && (deathmatch->value))
+		SetRespawn(ent, ent->item->quantity);
+
+	return true;
+}
+
 qboolean Pickup_AncientHead (edict_t *ent, edict_t *other)
 {
 	other->max_health += 2;
@@ -2109,6 +2121,28 @@ tank commander's head
 		NULL,
 		0,
 /* precache */ "items/s_health.wav items/n_health.wav items/l_health.wav items/m_health.wav"
+	},
+
+	// MDEFRAN: item_souls
+	{
+		"item_souls",
+		Pickup_Souls,
+		NULL,
+		NULL,
+		NULL,
+		"items/pkup.wav",
+		"models/items/c_head/tris.md2", EF_ROTATE,
+		NULL,
+		/* icon */		"i_fixme",
+		/* pickup */	"Souls",
+		/* width */		2,
+				60,
+				NULL,
+				0,
+				0,
+				NULL,
+				0,
+				/* precache */ ""
 	},
 
 	// end of list marker

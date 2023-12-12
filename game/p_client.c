@@ -493,6 +493,31 @@ void LookAtKiller (edict_t *self, edict_t *inflictor, edict_t *attacker)
 
 }
 
+edict_t* DropSouls(vec3_t origin) {
+	edict_t* ent;
+	gitem_t* item_souls;
+
+	// Find the item definition
+	item_souls = FindItem("Souls");
+	if (!item_souls) {
+		gi.dprintf("Error: item_souls not found\n");
+		return;
+	}
+
+	// Create a new entity for the item
+	ent = G_Spawn();
+	ent->classname = "item_souls";
+	VectorCopy(origin, ent->s.origin);
+
+	// Use SpawnItem to initialize the item
+	SpawnItem(ent, item_souls);
+
+	// Make the item visible
+	gi.linkentity(ent);
+
+	return ent;
+}
+
 /*
 ==================
 player_die
@@ -501,6 +526,20 @@ player_die
 void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point)
 {
 	int		n;
+
+	// MDEFRAN: drop souls
+	// Save the player's current souls
+	self->client->pers.souls_count = self->client->souls;
+
+	// Reset the current soul count on the player's entity
+	self->client->souls = 0;
+
+	if (self->client->pers.dropped_souls != NULL) {
+		G_FreeEdict(self->client->pers.dropped_souls);
+		self->client->pers.dropped_souls = NULL;
+	}
+
+	self->client->pers.dropped_souls = DropSouls(self->s.origin);
 
 	VectorClear (self->avelocity);
 
@@ -630,6 +669,8 @@ void InitClientPersistant (gclient_t *client)
 
 	// MDEFRAN: initialize souls to 0
 	client->souls = 0;
+	client->pers.souls_count;
+	client->pers.dropped_souls = NULL;
 }
 
 
@@ -663,6 +704,9 @@ void SaveClientData (void)
 		game.clients[i].pers.health = ent->health;
 		game.clients[i].pers.max_health = ent->max_health;
 		game.clients[i].pers.savedFlags = (ent->flags & (FL_GODMODE|FL_NOTARGET|FL_POWER_ARMOR));
+		// MDEFRAN: save souls data
+		game.clients[i].pers.souls_count = ent->client->souls;
+
 		if (coop->value)
 			game.clients[i].pers.score = ent->client->resp.score;
 	}
@@ -979,16 +1023,17 @@ void CopyToBodyQue (edict_t *ent)
 	gi.linkentity (body);
 }
 
-
-void respawn (edict_t *self)
+void respawn(edict_t* self)
 {
+
 	if (deathmatch->value || coop->value)
 	{
 		// spectator's don't leave bodies
 		if (self->movetype != MOVETYPE_NOCLIP)
-			CopyToBodyQue (self);
+			CopyToBodyQue(self);
 		self->svflags &= ~SVF_NOCLIENT;
-		PutClientInServer (self);
+
+		PutClientInServer(self);
 
 		// add a teleportation effect
 		self->s.event = EV_PLAYER_TELEPORT;
@@ -1001,10 +1046,66 @@ void respawn (edict_t *self)
 
 		return;
 	}
+	// MDEFRAN: rewrote singeplayer respawn logic to allow for persistent data
+	else
+	{
+		// Singleplayer respawn logic
+		CopyToBodyQue(self);
 
-	// restart the entire server
-	gi.AddCommandString ("menu_loadgame\n");
+		// Clear death-related states and reset health
+		self->movetype = MOVETYPE_WALK;
+		self->deadflag = DEAD_NO;
+		self->health = 100; // Reset health or set to desired value
+		self->takedamage = DAMAGE_AIM;
+		self->flags &= ~FL_NO_KNOCKBACK;
+		self->svflags &= ~SVF_DEADMONSTER;
+
+		// Choose a spawn point
+		vec3_t spawn_origin, spawn_angles;
+		SelectSpawnPoint(self, spawn_origin, spawn_angles);
+
+		// Move player to spawn point
+		VectorCopy(spawn_origin, self->s.origin);
+		self->s.origin[2] += 1;  // Ensure off ground
+		VectorCopy(spawn_origin, self->s.old_origin);
+		VectorCopy(spawn_angles, self->s.angles);
+
+		// Reset view and movement
+		VectorCopy(spawn_angles, self->client->v_angle);
+		VectorCopy(spawn_angles, self->client->ps.viewangles);
+		VectorClear(self->velocity);
+		self->client->ps.pmove.pm_time = 0;
+		self->client->ps.pmove.pm_flags &= ~PMF_TIME_TELEPORT;
+
+		// Reset inventory
+		memset(self->client->pers.inventory, 0, sizeof(self->client->pers.inventory));
+
+		// Give the player starting blaster
+		self->client->pers.inventory[ITEM_INDEX(FindItem("Blaster"))] = 1;
+		self->client->newweapon = FindItem("Blaster");
+
+		// Set initial ammo counts
+		// Example: self->client->pers.inventory[ITEM_INDEX(FindItem("Bullets"))] = 50;
+
+		// Update the client's weapon and item states
+		self->client->pers.weapon = self->client->newweapon;
+		self->client->pers.lastweapon = self->client->newweapon;
+
+		// Other necessary resets (health, armor, etc.)
+		self->health = 100; // Starting health
+		self->client->pers.max_health = 100; // Max health
+
+		// Force the current weapon up
+		self->client->newweapon = self->client->pers.weapon;
+		ChangeWeapon(self);
+
+		gi.linkentity(self);
+
+		gi.dprintf("Souls after respawn: %d", self->client->pers.souls_count);
+	}
 }
+
+
 
 /* 
  * only called when pers.spectator changes
@@ -1108,6 +1209,8 @@ void PutClientInServer (edict_t *ent)
 	client_persistant_t	saved;
 	client_respawn_t	resp;
 
+	gi.dprintf("PutClientInServer: Souls = %d", ent->client->pers.souls_count);
+
 	// find a spawn point
 	// do it before setting health back up, so farthest
 	// ranging doesn't count this client
@@ -1158,6 +1261,8 @@ void PutClientInServer (edict_t *ent)
 	if (client->pers.health <= 0)
 		InitClientPersistant(client);
 	client->resp = resp;
+
+	gi.dprintf("Restored Souls = %d", client->pers.souls_count); // Debugging line
 
 	// copy some data from the client to the entity
 	FetchClientEntData (ent);

@@ -1,8 +1,21 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(499,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
-  g_combat.c
-C:\Users\Matthew\Programs\Quake2\quake2-full\game\g_combat.c(370,51): warning C4100: 'attacker': unreferenced formal parameter
-C:\Users\Matthew\Programs\Quake2\quake2-full\game\g_combat.c(370,36): warning C4100: 'targ': unreferenced formal parameter
-C:\Users\Matthew\Programs\Quake2\quake2-full\game\g_combat.c(249): warning C4701: potentially uninitialized local variable 'index' used
-C:\Users\Matthew\Programs\Quake2\quake2-full\game\g_combat.c(209): warning C4701: potentially uninitialized local variable 'power' used
+  p_client.c
+C:\Users\Matthew\Programs\Quake2\quake2-full\game\p_client.c(70,42): warning C4100: 'self': unreferenced formal parameter
+C:\Users\Matthew\Programs\Quake2\quake2-full\game\p_client.c(179,66): warning C4100: 'damage': unreferenced formal parameter
+C:\Users\Matthew\Programs\Quake2\quake2-full\game\p_client.c(179,56): warning C4100: 'kick': unreferenced formal parameter
+C:\Users\Matthew\Programs\Quake2\quake2-full\game\p_client.c(179,43): warning C4100: 'other': unreferenced formal parameter
+C:\Users\Matthew\Programs\Quake2\quake2-full\game\p_client.c(179,28): warning C4100: 'self': unreferenced formal parameter
+C:\Users\Matthew\Programs\Quake2\quake2-full\game\p_client.c(211,46): warning C4100: 'inflictor': unreferenced formal parameter
+C:\Users\Matthew\Programs\Quake2\quake2-full\game\p_client.c(504,3): warning C4033: 'DropSouls' must return a value
+C:\Users\Matthew\Programs\Quake2\quake2-full\game\p_client.c(526,91): warning C4100: 'point': unreferenced formal parameter
+C:\Users\Matthew\Programs\Quake2\quake2-full\game\p_client.c(978,89): warning C4100: 'point': unreferenced formal parameter
+C:\Users\Matthew\Programs\Quake2\quake2-full\game\p_client.c(978,60): warning C4100: 'attacker': unreferenced formal parameter
+C:\Users\Matthew\Programs\Quake2\quake2-full\game\p_client.c(978,40): warning C4100: 'inflictor': unreferenced formal parameter
+C:\Users\Matthew\Programs\Quake2\quake2-full\game\p_client.c(1478,10): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Matthew\Programs\Quake2\quake2-full\game\p_client.c(1483,2): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Matthew\Programs\Quake2\quake2-full\game\p_client.c(1523,2): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Matthew\Programs\Quake2\quake2-full\game\p_client.c(519): warning C4715: 'DropSouls': not all control paths return a value
+C:\Users\Matthew\Programs\Quake2\quake2-full\game\p_client.c(542): warning C4701: potentially uninitialized local variable 'ent' used
+C:\Users\Matthew\Programs\Quake2\quake2-full\game\p_client.c(542): warning C4703: potentially uninitialized local pointer variable 'ent' used
      Creating library .\..\release\gamex86.lib and object .\..\release\gamex86.exp
   game.vcxproj -> C:\Users\Matthew\Programs\Quake2\quake2-full\game\release\gamex86.dll

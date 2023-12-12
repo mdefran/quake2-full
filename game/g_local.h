@@ -844,6 +844,10 @@ typedef struct
 	int			selected_item;
 	int			inventory[MAX_ITEMS];
 
+	// MDEFRAN: details about dropped souls
+	edict_t *dropped_souls;
+	int souls_count;
+
 	// ammo capacities
 	int			max_bullets;
 	int			max_shells;
@@ -862,6 +866,7 @@ typedef struct
 	int			helpchanged;
 
 	qboolean	spectator;			// client is a spectator
+
 } client_persistant_t;
 
 // client data that stays across deathmatch respawns
