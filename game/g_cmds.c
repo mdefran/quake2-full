@@ -899,7 +899,6 @@ void Cmd_PlayerList_f(edict_t *ent)
 	gi.cprintf(ent, PRINT_HIGH, "%s", text);
 }
 
-
 /*
 =================
 ClientCommand
@@ -990,6 +989,18 @@ void ClientCommand (edict_t *ent)
 	// MDEFRAN: command for toggling chasecam
 	else if (Q_stricmp(cmd, "chasecam") == 0)
 		Cmd_Chasecam_Toggle(ent);
+	// command for testing bonfire ui
+	else if (Q_stricmp(cmd, "bonfire") == 0)
+		Cmd_BonfireUI_f(ent);
+	// command for upgrading skills at bonfire
+	else if (Q_stricmp(cmd, "upgrade") == 0)
+		Cmd_UpgradeStat_f(ent);
+	// command for debugging position
+	else if (Q_stricmp(cmd, "pos") == 0)
+		Cmd_PrintPos_f(ent);
+	// command for spawning bonfire
+	else if (Q_stricmp(cmd, "spawnbonfire") == 0)
+		Cmd_SpawnBonfire_f(ent);
 	else	// anything that doesn't match a command will be a chat
 		Cmd_Say_f (ent, false, true);
 }

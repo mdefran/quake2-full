@@ -671,6 +671,13 @@ void InitClientPersistant (gclient_t *client)
 	client->souls = 0;
 	client->pers.souls_count;
 	client->pers.dropped_souls = NULL;
+
+	// MDEFRAN: initialize stats to 0
+	client->pers.str = 0;
+	client->pers.dex = 0;
+	client->pers.inte = 0;
+
+	client->pers.nearby = false;
 }
 
 
@@ -1101,7 +1108,6 @@ void respawn(edict_t* self)
 
 		gi.linkentity(self);
 
-		gi.dprintf("Souls after respawn: %d", self->client->pers.souls_count);
 	}
 }
 
@@ -1209,8 +1215,6 @@ void PutClientInServer (edict_t *ent)
 	client_persistant_t	saved;
 	client_respawn_t	resp;
 
-	gi.dprintf("PutClientInServer: Souls = %d", ent->client->pers.souls_count);
-
 	// find a spawn point
 	// do it before setting health back up, so farthest
 	// ranging doesn't count this client
@@ -1261,8 +1265,6 @@ void PutClientInServer (edict_t *ent)
 	if (client->pers.health <= 0)
 		InitClientPersistant(client);
 	client->resp = resp;
-
-	gi.dprintf("Restored Souls = %d", client->pers.souls_count); // Debugging line
 
 	// copy some data from the client to the entity
 	FetchClientEntData (ent);
@@ -1434,6 +1436,10 @@ void ClientBegin (edict_t *ent)
 		InitClientResp (ent->client);
 		PutClientInServer (ent);
 	}
+
+	// MDEFRAN: place bonfires in level
+	// this is an ugly hack, should update to level initialization
+	PlaceBonfires();
 
 	if (level.intermissiontime)
 	{
@@ -1801,6 +1807,7 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 			other->touch (other, ent, NULL, NULL);
 		}
 
+		// MDEFRAN: detect bonfire radius
 
 	}
 
@@ -1849,6 +1856,15 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 		other = g_edicts + i;
 		if (other->inuse && other->client->chase_target == ent)
 			UpdateChaseCam(other);
+	}
+
+	// Print the bonfire UI when nearby
+	if (!ent->client->pers.nearby && NearBonfire(ent)) {
+		Cmd_BonfireUI_f(ent);
+		ent->client->pers.nearby = true;
+	}
+	else if (!NearBonfire(ent)) {
+		ent->client->pers.nearby = false;
 	}
 }
 

@@ -1780,7 +1780,8 @@ void SP_func_clock (edict_t *self)
 
 //=================================================================================
 
-void teleporter_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
+void 
+_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 {
 	edict_t		*dest;
 	int			i;
@@ -1849,7 +1850,7 @@ void SP_misc_teleporter (edict_t *ent)
 	gi.linkentity (ent);
 
 	trig = G_Spawn ();
-	trig->touch = teleporter_touch;
+	// trig->touch = teleporter_touch;
 	trig->solid = SOLID_TRIGGER;
 	trig->target = ent->target;
 	trig->owner = ent;

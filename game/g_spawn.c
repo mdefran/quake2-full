@@ -265,6 +265,9 @@ spawn_t	spawns[] = {
 	{"turret_base", SP_turret_base},
 	{"turret_driver", SP_turret_driver},
 
+	// MDEFRAN: bonfire spawn specifier
+	{"bonfire", SP_bonfire},
+
 	{NULL, NULL}
 };
 

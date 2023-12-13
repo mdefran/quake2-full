@@ -81,6 +81,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define BODY_QUEUE_SIZE		8
 
+
 typedef enum
 {
 	DAMAGE_NO,
@@ -230,6 +231,9 @@ typedef struct
 #define WEAP_HYPERBLASTER		9 
 #define WEAP_RAILGUN			10
 #define WEAP_BFG				11
+
+// MDEFRAN: function prototype for g_spawn
+void SP_bonfire(edict_t* self);
 
 typedef struct gitem_s
 {
@@ -847,6 +851,12 @@ typedef struct
 	// MDEFRAN: details about dropped souls
 	edict_t *dropped_souls;
 	int souls_count;
+
+	// MDEFRAN: bonfire stats
+	int str;
+	int dex;
+	int inte;
+	qboolean nearby;
 
 	// ammo capacities
 	int			max_bullets;
