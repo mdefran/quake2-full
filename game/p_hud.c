@@ -326,7 +326,7 @@ void HelpComputer (edict_t *ent)
 		level.level_name,
 		// MDEFRAN: edit help screen
 		//game.helpmessage1,
-		"Reach the bonfires\n to set your spawn.\n",
+		"Reach the bonfires\n to upgrade your stats.\n",
 		//game.helpmessage2,
 		"Kill monsters to get\n souls. You drop them\n on death.\n",
 		level.killed_monsters, level.total_monsters, 
