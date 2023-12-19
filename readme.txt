@@ -1,4 +1,4 @@
-### Dark Souls Mod for Quake 2
+Dark Souls Mod for Quake 2
 
 This mod adds certain features from Dark Souls to Quake 2. The following features have been implemented:
 
